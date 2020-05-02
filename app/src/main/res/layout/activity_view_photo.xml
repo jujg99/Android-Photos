@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/currentPhoto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".ViewPhoto">
+
+    <TableLayout
+        android:layout_width="0dp"
+        android:layout_height="642dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="378dp">
+
+            <ImageView
+                android:id="@+id/imageView"
+                android:layout_width="wrap_content"
+                android:layout_height="400dp"
+                tools:srcCompat="@tools:sample/backgrounds/scenic" />
+        </TableRow>
+
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="143dp">
+
+            <LinearLayout
+                android:layout_width="393dp"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <Button
+                    android:id="@+id/button"
+                    android:layout_width="118dp"
+                    android:layout_height="match_parent"
+                    android:onClick="nextPhoto"
+                    android:text="Next" />
+
+                <TextView
+                    android:id="@+id/textView"
+                    android:layout_width="160dp"
+                    android:layout_height="42dp"
+                    android:text="Tag List"
+                    android:textSize="24sp" />
+
+                <Button
+                    android:id="@+id/button3"
+                    android:layout_width="114dp"
+                    android:layout_height="42dp"
+                    android:onClick="previousPhoto"
+                    android:text="Previous" />
+            </LinearLayout>
+
+        </TableRow>
+
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="43dp">
+
+            <ListView
+                android:id="@+id/tagList"
+                android:layout_width="173dp"
+                android:layout_height="71dp">
+
+            </ListView>
+        </TableRow>
+
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="horizontal">
+
+                <Button
+                    android:id="@+id/button4"
+                    android:layout_width="106dp"
+                    android:layout_height="match_parent"
+                    android:onClick="addTag"
+                    android:text="Add Tag" />
+
+                <EditText
+                    android:id="@+id/tagname"
+                    android:layout_width="174dp"
+                    android:layout_height="wrap_content"
+                    android:ems="10"
+                    android:hint="tag name"
+                    android:inputType="textPersonName" />
+
+                <Button
+                    android:id="@+id/deleteTag"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:onClick="deleteTag"
+                    android:text="Delete Tag" />
+            </LinearLayout>
+        </TableRow>
+    </TableLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>
