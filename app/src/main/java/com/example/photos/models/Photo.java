@@ -8,7 +8,7 @@ import java.util.Iterator;
 
 import static android.graphics.Bitmap.createBitmap;
 
-public class Photo implements Serializable {
+public class Photo implements Serializable, Cloneable {
     private static final long serialVersionUID = -928455348061061924L;
     private int[] pixels;
     private int width;

@@ -50,25 +50,17 @@ public class ViewPhoto extends AppCompatActivity {
         currentAlbum = albums.get(albumPosition);
         currentPhoto = intent.getIntExtra("photoPosition", 0);
 
-        currentAlbum.getPhotos().get(currentPhoto).getTags().clear();
-        currentAlbum.getPhotos().get(currentPhoto).addTag("Location", "Home");
-
         //set listview
         try {
             adapter = new TagAdapter(this, R.layout.tag_item,
                     currentAlbum.getPhotos().get(currentPhoto).getTags());
-            //adapter.setNotifyOnChange(true);
+            adapter.setNotifyOnChange(true);
             listView = findViewById(R.id.tagList);
-            if(listView != null){
-                listView.setAdapter(adapter);
-            }
+            listView.setAdapter(adapter);
+            listView.setItemChecked(0, true);
         }catch (Exception e){
             e.printStackTrace();
         }
-
-
-        //listView.setItemChecked(0, true);
-
         //set photo
         ImageView imageView = (ImageView) findViewById(R.id.imageView);
         Bitmap bitmap = currentAlbum.getPhotos().get(currentPhoto).getImage();
@@ -81,6 +73,14 @@ public class ViewPhoto extends AppCompatActivity {
         }else {
             currentPhoto++;
         }
+        adapter = new TagAdapter(this, R.layout.tag_item,
+                currentAlbum.getPhotos().get(currentPhoto).getTags());
+
+        listView = findViewById(R.id.tagList);
+        listView.setAdapter(adapter);
+        ((TagAdapter) listView.getAdapter()).notifyDataSetChanged();
+        listView.setItemChecked(0, true);
+
         ImageView imageView = (ImageView) findViewById(R.id.imageView);
         Bitmap bitmap = currentAlbum.getPhotos().get(currentPhoto).getImage();
         imageView.setImageBitmap(bitmap);
@@ -92,6 +92,12 @@ public class ViewPhoto extends AppCompatActivity {
         }else {
             currentPhoto--;
         }
+        adapter = new TagAdapter(this, R.layout.tag_item,
+                currentAlbum.getPhotos().get(currentPhoto).getTags());
+        adapter.setNotifyOnChange(true);
+        listView = findViewById(R.id.tagList);
+        listView.setAdapter(adapter);
+        listView.setItemChecked(0, true);
         ImageView imageView = (ImageView) findViewById(R.id.imageView);
         Bitmap bitmap = currentAlbum.getPhotos().get(currentPhoto).getImage();
         imageView.setImageBitmap(bitmap);
@@ -124,7 +130,7 @@ public class ViewPhoto extends AppCompatActivity {
 
                 }else if(finalTag.equals("")){
                     AlertDialog.Builder builder1 = new AlertDialog.Builder(builder.getContext());
-                    builder1.setMessage("Please enter a tag name.");
+                    builder1.setMessage("Please enter a tag value.");
                     builder1.show();
                 }else{
                     if(choice[0] == 0){
@@ -133,7 +139,7 @@ public class ViewPhoto extends AppCompatActivity {
                         tagtype[0] = "Location";
                     }
                     if(currentAlbum.getPhotos().get(currentPhoto).addTag(tagtype[0], finalTag)){
-                        adapter.add(new Tag(tagtype[0], finalTag));
+                        adapter.notifyDataSetChanged();
                         //save
                         try {
                             FileOutputStream fos = getApplicationContext().openFileOutput("data.dat", Context.MODE_PRIVATE);
@@ -165,6 +171,115 @@ public class ViewPhoto extends AppCompatActivity {
     }
 
     public void deleteTag(View view){
+        if (adapter.getCount() == 0) {
+            new AlertDialog.Builder(this)
+                    .setMessage("This photo does not have any tags.")
+                    .setPositiveButton("OK", null)
+                    .show();
+            return;
+        }
 
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        final int itemPosition = listView.getCheckedItemPosition();
+        final Tag pickedTag = adapter.getItem(itemPosition);
+        builder.setMessage("Are you sure you want to remove " + pickedTag.toString() + "?");
+        builder.setPositiveButton("Yes",
+                new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int id) {
+                        adapter.notifyDataSetChanged();
+                        currentAlbum.getPhotos().get(currentPhoto).getTags().remove(pickedTag);
+                        try {
+                            FileOutputStream fos = getApplicationContext().openFileOutput("data.dat", Context.MODE_PRIVATE);
+                            ObjectOutputStream os = new ObjectOutputStream(fos);
+                            os.writeObject(albums);
+                            os.close();
+                            fos.close();
+                        } catch (Exception exception) {
+                            exception.printStackTrace();
+                        }
+                    }
+                });
+        builder.setNegativeButton("No",
+                new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int id) {
+                        dialog.cancel();
+                    }
+                });
+        builder.show();
+    }
+
+    public void movePhoto(final View view){
+        if(currentAlbum.getPhotos().size() == 0){
+            AlertDialog.Builder builder1 = new AlertDialog.Builder(this);
+            builder1.setMessage("There are no photos to move.");
+            builder1.show();
+            return;
+        }
+
+        final AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle("Move Photo");
+        final EditText input = new EditText(this);
+        input.setHint("Album name");
+        builder.setView(input);
+        builder.setPositiveButton("Move",
+                new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int id) {
+                        String album = "";
+                        album = input.getText().toString();
+                        if(album.equals("")){
+                            AlertDialog.Builder builder1 = new AlertDialog.Builder(builder.getContext());
+                            builder1.setMessage("Please enter the name of the album you would like to move the photo.");
+                            builder1.show();
+                        }else{
+                            Album specifiedAlbum = null;
+                            for(Album a: albums){
+                                if(a.getAlbum().equals(album)){
+                                    specifiedAlbum = a;
+                                    continue;
+                                }
+                            }
+                            if(specifiedAlbum != null){
+                                Photo p = null;
+                                try {
+                                    p = (Photo)currentAlbum.getPhotos().get(currentPhoto).clone();
+                                    specifiedAlbum.addClonedPhoto(p);
+                                    currentAlbum.getPhotos().remove(currentPhoto);
+                                } catch (CloneNotSupportedException e) {
+                                    e.printStackTrace();
+                                }
+                                //save
+                                try {
+                                    FileOutputStream fos = getApplicationContext().openFileOutput("data.dat", Context.MODE_PRIVATE);
+                                    ObjectOutputStream os = new ObjectOutputStream(fos);
+                                    os.writeObject(albums);
+                                    os.close();
+                                    fos.close();
+                                } catch (Exception exception) {
+                                    exception.printStackTrace();
+                                }
+                                if(currentAlbum.getPhotos().size() == 0){
+                                    finish();
+                                }else{
+                                    nextPhoto(view);
+                                }
+                            }else{
+                                AlertDialog.Builder builder1 = new AlertDialog.Builder(builder.getContext());
+                                builder1.setMessage("This album does not exist.");
+                                builder1.show();
+                            }
+                        }
+                    }
+                });
+        builder.setNegativeButton("Cancel",
+                new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int id) {
+                        dialog.cancel();
+                    }
+                });
+        builder.show();
     }
 }

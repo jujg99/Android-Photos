@@ -36,25 +36,26 @@
                 android:orientation="horizontal">
 
                 <Button
+                    android:id="@+id/button3"
+                    android:layout_width="114dp"
+                    android:layout_height="wrap_content"
+                    android:onClick="previousPhoto"
+                    android:text="Previous" />
+
+                <Button
+                    android:id="@+id/move"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:onClick="movePhoto"
+                    android:text="Move Photo" />
+
+                <Button
                     android:id="@+id/button"
                     android:layout_width="118dp"
                     android:layout_height="match_parent"
                     android:onClick="nextPhoto"
                     android:text="Next" />
-
-                <TextView
-                    android:id="@+id/textView"
-                    android:layout_width="160dp"
-                    android:layout_height="42dp"
-                    android:text="Tag List"
-                    android:textSize="24sp" />
-
-                <Button
-                    android:id="@+id/button3"
-                    android:layout_width="114dp"
-                    android:layout_height="42dp"
-                    android:onClick="previousPhoto"
-                    android:text="Previous" />
             </LinearLayout>
 
         </TableRow>
@@ -66,7 +67,9 @@
             <ListView
                 android:id="@+id/tagList"
                 android:layout_width="173dp"
-                android:layout_height="71dp">
+                android:layout_height="71dp"
+                android:choiceMode="singleChoice"
+                android:listSelector="#666666">
 
             </ListView>
         </TableRow>

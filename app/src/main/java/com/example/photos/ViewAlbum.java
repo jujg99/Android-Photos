@@ -51,7 +51,6 @@ public class ViewAlbum extends AppCompatActivity {
 
     public void addPhoto(View view){
         Intent i = new Intent(Intent.ACTION_PICK, android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
-
         startActivityForResult(i, RESULT_LOAD_IMAGE);
     }
 
@@ -97,7 +96,7 @@ public class ViewAlbum extends AppCompatActivity {
         Intent intent = new Intent(this, ViewPhoto.class);
 
         //intent.putExtra("album", albums);
-        intent.putExtra("albumPosition", 0);
+        intent.putExtra("albumPosition", 1);
         intent.putExtra("photoPosition", 0);
         startActivity(intent);
     }

@@ -54,9 +54,17 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void viewAlbum(View view){
+        try {
+            FileOutputStream fos = this.openFileOutput("data.dat", Context.MODE_PRIVATE);
+            ObjectOutputStream os = new ObjectOutputStream(fos);
+            os.writeObject(albums);
+            os.close();
+            fos.close();
+        } catch (Exception exception) {
+            exception.printStackTrace();
+        }
         Intent intent = new Intent(this, ViewAlbum.class);
-        //intent.putExtra("albums", albums);
-        intent.putExtra("albumPosition", 0);
+        intent.putExtra("albumPosition", 1);
         startActivity(intent);
     }
 
@@ -71,7 +79,7 @@ public class MainActivity extends AppCompatActivity {
         } catch (Exception exception) {
             exception.printStackTrace();
         }
-        Intent intent = new Intent(this, ViewAlbum.class);
+        Intent intent = new Intent(this, SearchPhotos.class);
         startActivity(intent);
     }
 }

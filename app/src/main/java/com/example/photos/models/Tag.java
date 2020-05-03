@@ -3,7 +3,7 @@ package com.example.photos.models;
 import java.io.Serializable;
 import java.util.ArrayList;
 
-public class Tag implements Serializable {
+public class Tag implements Serializable, Cloneable {
     private static final long serialVersionUID = 3056383083068193385L;
     private String name;
     private String value;
