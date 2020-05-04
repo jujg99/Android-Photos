@@ -4,15 +4,15 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Context;
 import android.content.Intent;
-import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.ParcelFileDescriptor;
-import android.provider.MediaStore;
 import android.view.View;
+import android.widget.ArrayAdapter;
 import android.widget.ImageView;
+import android.widget.ListView;
 
 import java.io.FileDescriptor;
 import java.io.FileInputStream;
@@ -21,6 +21,7 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.util.ArrayList;
 
+import com.example.photos.adapter.PhotoAdapter;
 import com.example.photos.models.*;
 
 public class ViewAlbum extends AppCompatActivity {
@@ -45,7 +46,11 @@ public class ViewAlbum extends AppCompatActivity {
         }
         //albums = (ArrayList<Album>) intent.getSerializableExtra("albums");
         int albumPosition = intent.getIntExtra("albumPosition", 0);
-        currentAlbum = albums.get(albumPosition);
+        try {
+            currentAlbum = albums.get(albumPosition);
+        } catch (Exception exception) {
+            exception.printStackTrace();
+        }
     }
 
 
@@ -72,8 +77,18 @@ public class ViewAlbum extends AppCompatActivity {
 
                 String caption = uri.getLastPathSegment();
 
-                ImageView imageView = (ImageView) findViewById(R.id.imageView2);
-                imageView.setImageBitmap(bitmap);
+
+                ArrayList<Photo> arrayList = new ArrayList<>();
+                for (Photo p : currentAlbum.getPhotos()) {
+                    arrayList.add(p);
+                }
+                PhotoAdapter adapter = new PhotoAdapter(this, R.layout.photo_view,arrayList);
+                adapter.setNotifyOnChange(true);
+                ListView listView = findViewById(R.id.imageList);
+                listView.setAdapter(adapter);
+                listView.setItemChecked(0, true);
+
+                //imageView.setImageBitmap(bitmap);
 
                 // Do something with the bitmap
 
@@ -98,6 +113,12 @@ public class ViewAlbum extends AppCompatActivity {
         //intent.putExtra("album", albums);
         intent.putExtra("albumPosition", 1);
         intent.putExtra("photoPosition", 0);
+        startActivity(intent);
+    }
+
+    @Override
+    public void onBackPressed() {
+        Intent intent = new Intent(this, MainActivity.class);
         startActivity(intent);
     }
 }

@@ -6,32 +6,122 @@
     android:layout_height="match_parent"
     tools:context=".MainActivity">
 
+    <EditText
+        android:id="@+id/renameText"
+        android:layout_width="145dp"
+        android:layout_height="40dp"
+        android:layout_marginStart="29dp"
+        android:layout_marginLeft="29dp"
+        android:layout_marginTop="14dp"
+        android:layout_marginEnd="37dp"
+        android:layout_marginRight="37dp"
+        android:layout_marginBottom="18dp"
+        android:ems="10"
+        android:inputType="textPersonName"
+        android:textAppearance="@style/TextAppearance.AppCompat.Small"
+        app:layout_constraintBottom_toTopOf="@+id/viewAlbum"
+        app:layout_constraintEnd_toStartOf="@+id/renameAlbum"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/newAlbum" />
+
+    <Button
+        android:id="@+id/renameAlbum"
+        android:layout_width="149dp"
+        android:layout_height="49dp"
+        android:layout_marginStart="37dp"
+        android:layout_marginLeft="37dp"
+        android:layout_marginTop="5dp"
+        android:layout_marginEnd="51dp"
+        android:layout_marginRight="51dp"
+        android:layout_marginBottom="18dp"
+        android:onClick="renameAlbum"
+        android:text="Rename Album"
+        app:layout_constraintBottom_toTopOf="@+id/button5"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/renameText"
+        app:layout_constraintTop_toBottomOf="@+id/addAlbum"
+        app:layout_constraintVertical_bias="1.0" />
+
+    <Button
+        android:id="@+id/button5"
+        android:layout_width="140dp"
+        android:layout_height="49dp"
+        android:layout_marginTop="16dp"
+        android:onClick="searchPhotos"
+        android:text="Search Photos"
+        app:layout_constraintStart_toEndOf="@+id/deleteAlbum"
+        app:layout_constraintTop_toBottomOf="@+id/renameAlbum" />
+
+    <Button
+        android:id="@+id/deleteAlbum"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="7dp"
+        android:layout_marginLeft="7dp"
+        android:layout_marginTop="156dp"
+        android:layout_marginEnd="9dp"
+        android:layout_marginRight="9dp"
+        android:onClick="deleteAlbum"
+        android:text="Delete Album"
+        app:layout_constraintEnd_toStartOf="@+id/button5"
+        app:layout_constraintStart_toEndOf="@+id/viewAlbum"
+        app:layout_constraintTop_toTopOf="parent" />
+
     <Button
         android:id="@+id/viewAlbum"
         android:layout_width="124dp"
         android:layout_height="48dp"
-        android:layout_marginStart="52dp"
-        android:layout_marginLeft="52dp"
-        android:layout_marginTop="20dp"
-        android:layout_marginEnd="40dp"
-        android:layout_marginRight="40dp"
+        android:layout_marginStart="2dp"
+        android:layout_marginLeft="2dp"
+        android:layout_marginTop="18dp"
         android:onClick="viewAlbum"
         android:text="View Album"
-        app:layout_constraintEnd_toStartOf="@+id/button5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/renameText" />
+
+    <Button
+        android:id="@+id/addAlbum"
+        android:layout_width="124dp"
+        android:layout_height="48dp"
+        android:layout_marginStart="22dp"
+        android:layout_marginLeft="22dp"
+        android:layout_marginTop="36dp"
+        android:layout_marginEnd="84dp"
+        android:layout_marginRight="84dp"
+        android:onClick="addAlbum"
+        android:text="Add Album"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/newAlbum"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <EditText
+        android:id="@+id/newAlbum"
+        android:layout_width="145dp"
+        android:layout_height="40dp"
+        android:layout_marginStart="36dp"
+        android:layout_marginLeft="36dp"
+        android:layout_marginTop="44dp"
+        android:layout_marginEnd="22dp"
+        android:layout_marginRight="22dp"
+        android:ems="10"
+        android:inputType="textPersonName"
+        android:textAppearance="@style/TextAppearance.AppCompat.Small"
+        app:layout_constraintEnd_toStartOf="@+id/addAlbum"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <Button
-        android:id="@+id/button5"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="20dp"
-        android:layout_marginEnd="102dp"
-        android:layout_marginRight="102dp"
-        android:onClick="searchPhotos"
-        android:text="Search Photos"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/viewAlbum"
+    <ListView
+        android:id="@+id/albumList"
+        android:layout_width="411dp"
+        android:layout_height="329dp"
+        android:layout_marginTop="220dp"
+        android:choiceMode="singleChoice"
+        android:focusableInTouchMode="false"
+        android:isScrollContainer="false"
+        android:listSelector="#666666"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
