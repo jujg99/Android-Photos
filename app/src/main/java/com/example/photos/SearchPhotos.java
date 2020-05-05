@@ -61,6 +61,7 @@ public class SearchPhotos extends AppCompatActivity {
 
     public void search(View view){
         result.clear();
+        adapter.notifyDataSetChanged();
         String tagValue = "";
         EditText tg  = (EditText) findViewById(R.id.tagValue);
         tagValue = tg.getText().toString();

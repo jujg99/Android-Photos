@@ -138,13 +138,13 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void renameAlbum(View view) {
-        EditText albumToRename = findViewById(R.id.renameText);
+        EditText albumToRename = findViewById(R.id.renameText);/*
         if (albumToRename.getText().toString().equals("stock")) {
             AlertDialog.Builder builder1 = new AlertDialog.Builder(this);
             builder1.setMessage("This album already exists. Please choose a new name.");
             builder1.show();
             return;
-        }
+        }*/
         for (Album a: albums) {
             if (a.getAlbum().equals(albumToRename.getText().toString())) {
                 //album already exists
@@ -155,13 +155,13 @@ public class MainActivity extends AppCompatActivity {
             }
         }
         albumList=(ListView)findViewById(R.id.albumList);
-        String a = albumList.getItemAtPosition(selectedPosition).toString();
+        String a = albumList.getItemAtPosition(selectedPosition).toString();/*
         if (a.equals("stock")) {
             AlertDialog.Builder builder1 = new AlertDialog.Builder(this);
             builder1.setMessage("Cannot rename stock.");
             builder1.show();
             return;
-        }
+        }*/
         for (Album album : albums) {
             if (album.getAlbum().equals(a))
                 album.setAlbum(albumToRename.getText().toString());

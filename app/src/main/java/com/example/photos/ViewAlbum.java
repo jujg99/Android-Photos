@@ -33,6 +33,7 @@ public class ViewAlbum extends AppCompatActivity {
     private ListView imageList;
     private ArrayList<Photo> images;
     private int selectedPosition;
+    private int albumpos;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,8 +50,8 @@ public class ViewAlbum extends AppCompatActivity {
             exception.printStackTrace();
         }
 
-        int albumPosition = intent.getIntExtra("albumPosition", 0);
-        currentAlbum = albums.get(albumPosition);
+        albumpos = intent.getIntExtra("albumPosition", 0);
+        currentAlbum = albums.get(albumpos);
         imageList = findViewById(R.id.imageList);
         imageList.setOnItemClickListener(new AdapterView.OnItemClickListener()
         {
@@ -117,6 +118,7 @@ public class ViewAlbum extends AppCompatActivity {
                 // Do something with the bitmap
 
                 currentAlbum.addPhoto(bitmap, caption);
+                setDisplay();
                 //save
                 try {
                     FileOutputStream fos = this.openFileOutput("data.dat", Context.MODE_PRIVATE);
@@ -133,10 +135,8 @@ public class ViewAlbum extends AppCompatActivity {
 
     public void viewPhoto(View view){
         Intent intent = new Intent(this, ViewPhoto.class);
-
-        //intent.putExtra("album", albums);
-        intent.putExtra("albumPosition", 1);
-        intent.putExtra("photoPosition", 0);
+        intent.putExtra("albumPosition", albumpos);
+        intent.putExtra("photoPosition", selectedPosition);
         startActivity(intent);
     }
 
