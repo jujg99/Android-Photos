@@ -98,8 +98,12 @@ public class MainActivity extends AppCompatActivity {
             exception.printStackTrace();
         }
         Intent intent = new Intent(this, ViewAlbum.class);
-        Album a = (Album)albumList.getSelectedItem();
-        int i = albums.indexOf(a);
+        String str = albumList.getItemAtPosition(selectedPosition).toString();
+        int i = 0;
+        for (Album a : albums) {
+            if (a.getAlbum().equals(str))
+                i = albums.indexOf(a);
+        }
         intent.putExtra("albumPosition", i);
         startActivity(intent);
     }

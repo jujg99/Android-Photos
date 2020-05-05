@@ -10,6 +10,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.ParcelFileDescriptor;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.ListView;
@@ -29,6 +30,9 @@ public class ViewAlbum extends AppCompatActivity {
     private static int RESULT_LOAD_IMAGE = 1;
     private ArrayList<Album> albums;
     private Album currentAlbum;
+    private ListView imageList;
+    private ArrayList<Photo> images;
+    private int selectedPosition;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,15 +48,35 @@ public class ViewAlbum extends AppCompatActivity {
         } catch (Exception exception) {
             exception.printStackTrace();
         }
-        //albums = (ArrayList<Album>) intent.getSerializableExtra("albums");
+
         int albumPosition = intent.getIntExtra("albumPosition", 0);
-        try {
-            currentAlbum = albums.get(albumPosition);
-        } catch (Exception exception) {
-            exception.printStackTrace();
-        }
+        currentAlbum = albums.get(albumPosition);
+        imageList = findViewById(R.id.imageList);
+        imageList.setOnItemClickListener(new AdapterView.OnItemClickListener()
+        {
+            @Override
+            public void onItemClick(AdapterView<?> adapter, View v, int position,
+                                    long arg3)
+            {
+                selectedPosition = position;
+            }
+        });
+        setDisplay();
     }
 
+    public void setDisplay() {
+        images = new ArrayList<Photo>();
+
+        for (Photo p : currentAlbum.getPhotos()) {
+            images.add(p);
+        }
+
+        PhotoAdapter adapter = new PhotoAdapter(this, R.layout.photo_view, images);
+        adapter.setNotifyOnChange(true);
+
+        imageList.setAdapter(adapter);
+        imageList.setItemChecked(0, true);
+    }
 
     public void addPhoto(View view){
         Intent i = new Intent(Intent.ACTION_PICK, android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
@@ -114,6 +138,13 @@ public class ViewAlbum extends AppCompatActivity {
         intent.putExtra("albumPosition", 1);
         intent.putExtra("photoPosition", 0);
         startActivity(intent);
+    }
+
+    public void deletePhoto(View view) {
+        if (currentAlbum.getPhotos().size() == 0)
+            return;
+        currentAlbum.getPhotos().remove(currentAlbum.getPhotos().get(selectedPosition));
+        setDisplay();
     }
 
     @Override
